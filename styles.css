@@ -1,0 +1,17 @@
+/* styles.css */
+
+/* Add styles here to customize the appearance of your app */
+
+.app {
+  padding: 30px;
+  margin: 30px;
+  text-align: center;
+}
+
+.app > ul > li {
+  list-style: none;
+}
+
+.app > ul > li > a {
+  cursor: pointer;
+}
