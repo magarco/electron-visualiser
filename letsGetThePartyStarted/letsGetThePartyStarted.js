@@ -1,6 +1,7 @@
 const tweakpane = require("tweakpane");
 const random = require("canvas-sketch-util/random");
 const math = require("canvas-sketch-util/math");
+const { playSong } = require("../lib/audio");
 
 let frame = 0;
 
@@ -144,5 +145,7 @@ const loadImage = (src) => {
 };
 
 createPane();
+
+playSong("../file_example_MP3_1MG.mp3");
 
 window.requestAnimationFrame(loop);

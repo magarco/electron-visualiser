@@ -8,6 +8,7 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder"
   },
+  "type": "commonjs",
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
     "Electron",
@@ -20,11 +21,12 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^16.0.7",
-    "electron-reloader": "^1.2.1",
-    "electron-builder": "^22.14.5"
+    "electron-builder": "^22.14.5",
+    "electron-reloader": "^1.2.1"
   },
   "dependencies": {
     "canvas-sketch-util": "^1.10.0",
+    "node-fetch": "^3.1.0",
     "tweakpane": "^3.0.7"
   },
   "build": {

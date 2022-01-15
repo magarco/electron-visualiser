@@ -1,8 +1,10 @@
+const { playSong } = require("./lib/audio");
+
 const openVisualiserWindow = (visualiserFile) => {
   window.open(
     visualiserFile,
     "_blank",
-    "frame=false,nodeIntegration=yes,contextIsolation=no"
+    "frame=true,nodeIntegration=yes,contextIsolation=no"
   );
 };
 
@@ -11,13 +13,7 @@ visualiserLink.addEventListener("click", (e) => {
   openVisualiserWindow("letsGetThePartyStarted/letsGetThePartyStarted.html");
 });
 
-window.addEventListener('DOMContentLoaded', () => {
-  const replaceText = (selector, text) => {
-    const element = document.getElementById(selector)
-    if (element) element.innerText = text
-  }
-
-  for (const type of ['chrome', 'node', 'electron']) {
-    console.log(`${type}-version`, process.versions[type])
-  }
-})
+const playButton = document.getElementById("#play");
+playButton.addEventListener("click", () => {
+  playSong("file_example_MP3_1MG.mp3");
+});
