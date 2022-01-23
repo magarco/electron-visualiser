@@ -28,9 +28,131 @@ canvas.width = width;
 canvas.height = height;
 const ctx = canvas.getContext("2d");
 
+class Vector {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+  getDistance(v) {
+    return Math.sqrt((this.x - v.x) ** 2 + (this.y - v.y) ** 2);
+  }
+}
+
+class Agent {
+  constructor(x, y, width, height) {
+    this.pos = new Vector(x, y);
+    this.vel = new Vector(random.range(-1, 1), random.range(-1, 1));
+    this.radius = random.range(4, 14);
+    this.width = width;
+    this.height = height;
+  }
+
+  update(width, height) {
+    this.pos.x += this.vel.x;
+    this.pos.y += this.vel.y;
+
+    // check if need to bounce
+    // if (this.pos.x < 0 || this.pos.x > this.width) {
+    //   this.vel.x *= -1;
+    // }
+    // if (this.pos.y < 0 || this.pos.y > this.height) {
+    //   this.vel.y *= -1;
+    // }
+
+    // check if need to wrap
+    if (this.pos.x < 0 || this.pos.x > this.width) {
+      this.pos.x < 0 ? (this.pos.x = width) : (this.pos.x = 0);
+    }
+    if (this.pos.y < 0 || this.pos.y > this.height) {
+      this.pos.y < 0 ? (this.pos.y = height) : (this.pos.y = 0);
+    }
+  }
+
+  draw(context) {
+    context.save();
+    context.translate(this.pos.x, this.pos.y);
+    context.lineWidth = 3;
+    context.beginPath();
+    context.arc(0, 0, this.radius, 0, 2 * Math.PI);
+    context.fillStyle = "white";
+    context.fill();
+    context.stroke();
+    context.restore();
+  }
+}
+
+const agents = [];
+for (let i = 0; i < 40; i++) {
+  agents.push(
+    new Agent(random.range(0, width), random.range(0, height), width, height)
+  );
+}
+function hslToRgb(h, s, l) {
+  var r, g, b;
+
+  if (s == 0) {
+    r = g = b = l; // achromatic
+  } else {
+    function hue2rgb(p, q, t) {
+      if (t < 0) t += 1;
+      if (t > 1) t -= 1;
+      if (t < 1 / 6) return p + (q - p) * 6 * t;
+      if (t < 1 / 2) return q;
+      if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+      return p;
+    }
+
+    var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    var p = 2 * l - q;
+    r = hue2rgb(p, q, h + 1 / 3);
+    g = hue2rgb(p, q, h);
+    b = hue2rgb(p, q, h - 1 / 3);
+  }
+
+  return [Math.floor(r * 255), Math.floor(g * 255), Math.floor(b * 255)];
+}
+
+// convert a number to a color using hsl
+function numberToColorHsl(i) {
+  // as the function expects a value between 0 and 1, and red = 0° and green = 120°
+  // we convert the input to the appropriate hue value
+  var hue = (i * 1.2) / 360;
+  // we convert hsl to rgb (saturation 100%, lightness 50%)
+  var rgb = hslToRgb(hue, 1, 0.5);
+  // we format to css value and return
+  return "rgb(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + ")";
+}
+
 const loop = async () => {
   frame++;
 
+  ctx.fillStyle = "black";
+  ctx.fillRect(0, 0, width, height);
+
+  for (let i = 0; i < 40; i++) {
+    const agent = agents[i];
+    for (let j = i + 1; j < 40; j++) {
+      const other = agents[j];
+      const distance = agent.pos.getDistance(other.pos);
+      if (distance < 250) {
+        ctx.save();
+        ctx.lineWidth = math.mapRange(distance, 0, 250, 8, 0.1);
+        ctx.strokeStyle = numberToColorHsl(
+          math.mapRange(distance, 0, 250, 360, 1)
+        );
+        ctx.beginPath();
+        ctx.moveTo(agent.pos.x, agent.pos.y);
+        ctx.lineTo(other.pos.x, other.pos.y);
+        ctx.stroke();
+        ctx.restore();
+      }
+    }
+  }
+
+  agents.forEach((agent) => {
+    agent.update(width, height);
+    agent.draw(ctx);
+  });
 
   window.requestAnimationFrame(loop);
 };
@@ -71,7 +193,7 @@ const loadImage = (src) => {
   });
 };
 
-createPane();
+// createPane();
 
 playSong("../file_example_MP3_1MG.mp3");
 

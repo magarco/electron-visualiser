@@ -31,7 +31,7 @@ const ctx = canvas.getContext("2d");
 const loop = async () => {
   frame++;
 
-  const oliStreetsImage = await loadImage("oliStreets.jpg");
+  const oliStreetsImage = await loadImage("rainbow-sq.jpg");
 
   const cell = oliStreetsImage.width / params.rows;
   const typeCols = params.cols; //Math.floor(width / cell);

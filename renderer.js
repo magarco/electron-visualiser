@@ -8,7 +8,7 @@ const openVisualiserWindow = (visualiserFile) => {
   );
 };
 
-const visuals = ["letsGetThePartyStarted", "mergeVisual"];
+const visuals = ["letsGetThePartyStarted", "oliStreets", "mergeVisual"];
 
 const visualiserLinks = visuals.map((v) => {
   return {

@@ -3,7 +3,8 @@
 /* Add styles here to customize the appearance of your app */
 
 body {
-font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  background-color: darkgray;
 }
 
 .app {
