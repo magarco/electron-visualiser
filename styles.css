@@ -2,16 +2,11 @@
 
 /* Add styles here to customize the appearance of your app */
 
+body {
+font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
 .app {
-  padding: 30px;
-  margin: 30px;
+  padding: 15px;
   text-align: center;
-}
-
-.app > ul > li {
-  list-style: none;
-}
-
-.app > ul > li > a {
-  cursor: pointer;
 }

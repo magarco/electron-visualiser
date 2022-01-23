@@ -8,12 +8,22 @@ const openVisualiserWindow = (visualiserFile) => {
   );
 };
 
-const visualiserLink = document.getElementById("letsGetThePartyStarted");
-visualiserLink.addEventListener("click", (e) => {
-  openVisualiserWindow("letsGetThePartyStarted/letsGetThePartyStarted.html");
+const visuals = ["letsGetThePartyStarted", "mergeVisual"];
+
+const visualiserLinks = visuals.map((v) => {
+  return {
+    visualName: v,
+    docRef: document.getElementById(v),
+  };
 });
 
-const playButton = document.getElementById("#play");
-playButton.addEventListener("click", () => {
-  playSong("file_example_MP3_1MG.mp3");
-});
+visualiserLinks.map((vl) =>
+  vl.docRef.addEventListener("click", (e) => {
+    openVisualiserWindow(`${vl.visualName}/${vl.visualName}.html`);
+  })
+);
+
+// const playButton = document.getElementById("#play");
+// playButton.addEventListener("click", () => {
+//   playSong("file_example_MP3_1MG.mp3");
+// });
