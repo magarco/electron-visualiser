@@ -6,16 +6,19 @@ const { playSong } = require("../lib/audio");
 let frame = 0;
 
 const params = {
-  rows: 100,
-  cols: 100,
+  rows: 25,
+  cols: 25,
   scaleMin: 10,
-  scaleMax: 10,
-  speed: 10,
-  frequency: 10,
+  scaleMax: 50,
+  speed: 50,
+  frequency: 25,
   amplitude: 10,
   // frame: 0,
   // animate: true,
-  lineCap: "butt",
+  lineCap: "round",
+  red: 50,
+  green: 20,
+  blue: 30,
 };
 const width = document.body.clientWidth;
 const height = document.body.clientHeight;
@@ -31,9 +34,9 @@ const ctx = canvas.getContext("2d");
 const loop = async () => {
   frame++;
 
-  const oliStreetsImage = await loadImage("rainbow-sq.jpg");
+  const loadedImage = await loadImage("rainbow-sq.jpg");
 
-  const cell = oliStreetsImage.width / params.rows;
+  const cell = loadedImage.width / params.rows;
   const typeCols = params.cols; //Math.floor(width / cell);
   const typeRows = params.rows; //Math.floor(height / cell);
   const numTypeCells = typeCols * typeRows;
@@ -41,7 +44,7 @@ const loop = async () => {
   typeCanvas.width = typeCols;
   typeCanvas.height = typeRows;
 
-  typeContext.drawImage(oliStreetsImage, 0, 0, typeRows, typeCols);
+  typeContext.drawImage(loadedImage, 0, 0, typeRows, typeCols);
 
   ctx.fillStyle = "white";
   ctx.fillRect(0, 0, width, height);
@@ -64,10 +67,10 @@ const loop = async () => {
     const row = i % cols;
     const col = Math.floor(i / cols);
 
-    const r = typeData[i * 4];
-    const g = typeData[i * 4 + 1];
-    const b = typeData[i * 4 + 2];
-    const a = typeData[i * 4 + 3];
+    // const r = typeData[i * 4];
+    // const g = typeData[i * 4 + 1];
+    // const b = typeData[i * 4 + 2];
+    // const a = typeData[i * 4 + 3];
     // console.log(r,g,b)
 
     const x = cellWidth * row;
@@ -80,12 +83,20 @@ const loop = async () => {
     const n = random.noise3D(
       x,
       y,
-      frame * params.speed,
+      frame * params.speed/10,
       params.frequency / 10000,
       params.amplitude / 10
     );
     const angle = n * Math.PI * 0.2;
     const scale = math.mapRange(n, -1, 1, params.scaleMin, params.scaleMax);
+
+    // const r = math.mapRange(n, -1, 1, 0, 255);
+    // const g = math.mapRange(n, -1, 1, 0, 255)
+    // const b = math.mapRange(n, -1, 1, 0, 255)
+
+    const r = math.mapRange((n * params.red) / 100, -1, 1, 0, 255);
+    const g = math.mapRange((n * params.green) / 100, -1, 1, 0, 255);
+    const b = math.mapRange((n * params.blue) / 100, -1, 1, 0, 255);
 
     ctx.save();
     ctx.translate(x, y);
@@ -113,10 +124,10 @@ const createPane = () => {
   let folder;
 
   folder = pane.addFolder({ title: "Grid" });
-  folder.addInput(params, "cols", { min: 2, max: 1000, step: 1 });
-  folder.addInput(params, "rows", { min: 2, max: 1000, step: 1 });
-  folder.addInput(params, "scaleMin", { min: 0, max: 1000 });
-  folder.addInput(params, "scaleMax", { min: 0, max: 1000 });
+  folder.addInput(params, "cols", { min: 2, max: 250, step: 1 });
+  folder.addInput(params, "rows", { min: 2, max: 250, step: 1 });
+  folder.addInput(params, "scaleMin", { min: 0, max: 250 });
+  folder.addInput(params, "scaleMax", { min: 0, max: 250 });
   pane.addInput(params, "lineCap", {
     options: {
       Butt: "butt",
@@ -128,6 +139,9 @@ const createPane = () => {
   folder = pane.addFolder({ title: "Noise" });
   folder.addInput(params, "frequency", { min: 1, max: 100 });
   folder.addInput(params, "amplitude", { min: 1, max: 100 });
+  folder.addInput(params, "red", { min: 1, max: 100 });
+  folder.addInput(params, "green", { min: 1, max: 100 });
+  folder.addInput(params, "blue", { min: 1, max: 100 });
 
   folder = pane.addFolder({ title: "Animation" });
   // folder.addInput(params, "animate");

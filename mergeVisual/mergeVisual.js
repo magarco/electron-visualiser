@@ -42,7 +42,7 @@ class Agent {
   constructor(x, y, width, height) {
     this.pos = new Vector(x, y);
     this.vel = new Vector(random.range(-1, 1), random.range(-1, 1));
-    this.radius = random.range(4, 14);
+    this.radius = random.range(2, 6);
     this.width = width;
     this.height = height;
   }
@@ -71,7 +71,7 @@ class Agent {
   draw(context) {
     context.save();
     context.translate(this.pos.x, this.pos.y);
-    context.lineWidth = 3;
+    context.lineWidth = 2;
     context.beginPath();
     context.arc(0, 0, this.radius, 0, 2 * Math.PI);
     context.fillStyle = "white";
@@ -82,7 +82,7 @@ class Agent {
 }
 
 const agents = [];
-for (let i = 0; i < 40; i++) {
+for (let i = 0; i < 20; i++) {
   agents.push(
     new Agent(random.range(0, width), random.range(0, height), width, height)
   );
@@ -129,16 +129,16 @@ const loop = async () => {
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, width, height);
 
-  for (let i = 0; i < 40; i++) {
+  for (let i = 0; i < 20; i++) {
     const agent = agents[i];
-    for (let j = i + 1; j < 40; j++) {
+    for (let j = i + 1; j < 20; j++) {
       const other = agents[j];
       const distance = agent.pos.getDistance(other.pos);
       if (distance < 250) {
         ctx.save();
-        ctx.lineWidth = math.mapRange(distance, 0, 250, 8, 0.1);
+        ctx.lineWidth = math.mapRange(distance, 0, 250, 0.1, 1);
         ctx.strokeStyle = numberToColorHsl(
-          math.mapRange(distance, 0, 250, 360, 1)
+          math.mapRange(distance, 0, 250, 1, 360)
         );
         ctx.beginPath();
         ctx.moveTo(agent.pos.x, agent.pos.y);

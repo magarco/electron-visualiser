@@ -113,10 +113,10 @@ const createPane = () => {
   let folder;
 
   folder = pane.addFolder({ title: "Grid" });
-  folder.addInput(params, "cols", { min: 2, max: 1000, step: 1 });
-  folder.addInput(params, "rows", { min: 2, max: 1000, step: 1 });
-  folder.addInput(params, "scaleMin", { min: 0, max: 1000 });
-  folder.addInput(params, "scaleMax", { min: 0, max: 1000 });
+  folder.addInput(params, "cols", { min: 2, max: 250, step: 1 });
+  folder.addInput(params, "rows", { min: 2, max: 250, step: 1 });
+  folder.addInput(params, "scaleMin", { min: 0, max: 250 });
+  folder.addInput(params, "scaleMax", { min: 0, max: 250 });
   pane.addInput(params, "lineCap", {
     options: {
       Butt: "butt",
